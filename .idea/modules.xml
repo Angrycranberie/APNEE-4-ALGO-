@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/APNEE-4-ALGO-.iml" filepath="$PROJECT_DIR$/.idea/APNEE-4-ALGO-.iml" />
+      <module fileurl="file://$PROJECT_DIR$/APNEE4.iml" filepath="$PROJECT_DIR$/APNEE4.iml" />
     </modules>
   </component>
 </project>
