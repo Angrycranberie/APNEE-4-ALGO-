@@ -1,17 +1,22 @@
 import Dessin.*;
+
+import javax.print.attribute.standard.OrientationRequested;
 import java.awt.Color;
 import java.util.*;
 
 
 public class AlgoJarvis {
-    static final double PRECISION=1E-6;
+    static int Orientation(Point p, Point q, Point pj){
+        int val = (q.y - p.y) * (pj.x - q.x) - (q.x - p.x) * (pj.y - q.y);
+        if(val == 0) return 0;
+        return (val > 0)? 1:2;
+    }
 
     public static void main(Fenetre f, String [] args) {
         Random r = new Random();
         List<Point> l = new LinkedList<Point>();
         List<Point> ec = new LinkedList<Point>();
         int nbPoints;
-
         // Reccuperation du nombre de points en argument (ou valeur par defaut)
         if (args.length > 0) {
             nbPoints = Integer.parseInt(args[0]);
@@ -31,35 +36,46 @@ public class AlgoJarvis {
 
 
         //Algo Jarvis
-        Point pini = l.get(0), pcourant, pprec, psuiv = null;
+        Point pini = l.get(0), pcourant, pprec,q;
         for(Point p : l){
             if(pini.x > p.x){
                 pini = p;
             }
         }
-        ec.add(pini);
         pcourant = pini;
-        pprec = new Point(pini.x -1, pini.y);
-
+       // pprec = new Point(pini.x -1, pini.y);
+        // f.tracer(new Segment(pcourant.x, pcourant.y,pprec.x, pprec.y));
         do{
-            int x1, x2, y1, y2;
-            double Aire = 0;
+            //int x1, x2, y1, y2;
+            //double angle = -2;
+            ec.add(pcourant);
+
+            q = l.get((l.indexOf(pcourant)+1)%l.size());
             for(Point p : l){
 
-                if(p != pprec && p != pcourant){
+                /*if(p != pprec && p != pcourant && !ec.contains(p) ){
+                    f.tracer(new Segment(pcourant.x, pcourant.y,p.x,p.y,Color.red));
                     x1 = pcourant.x - pprec.x;
                     y1 = pcourant.y - pprec.y;
                     x2 = p.x - pcourant.x;
                     y2 = p.y - pcourant.y;
-                    if(Aire < x1*y2-x2*y1){
-                        Aire = x1*y2-x2*y1;
+                    double angletemp = Math.acos((x1*y1 + x2*y2)/(Math.sqrt(x1*x1 + y1*y1)*Math.sqrt(x2*x2 + y2*y2)));
+
+                    if(angle < angletemp){
+                        angle = angletemp;
                         psuiv = p;
                     }
+                }*/
+                f.tracer(new Segment(pcourant.x, pcourant.y,p.x,p.y,Color.red));
+
+                if(Orientation(pcourant, q, p)==2){
+                    q = p;
                 }
+
+                f.effacer(new Segment(pcourant.x, pcourant.y,p.x,p.y));
             }
-            pprec = pcourant;
-            pcourant = psuiv;
-            ec.add(pcourant);
+            f.tracer(new Segment(pcourant.x, pcourant.y, q.x,q.y));
+            pcourant = q;
 
 
         }while (pcourant != pini);
